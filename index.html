@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!--<meta http-equiv="pragma" content="no-cache">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+		<title>DecentrafileUSB</title>
+
+		<!--SEO Header Metadata-->
+		<!-- general meta data -->
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">    
+		<meta name=robots content="noindex">    
+		<meta name="author" content="Choice Internet Brands, Inc.">
+		<meta name="copyright" content="Choice Internet Brands, Inc.">
+		
+		<!--Stylesheets and links-->
+		<link rel="stylesheet" href="css/style.css?v0.1" type='text/css'>
+		<link rel="stylesheet" href="css/upload-utilities.css?v0.1" type='text/css'>
+		<link rel="stylesheet" href="css/node-menu.css?v0.1" type='text/css'>
+
+		<!--Libraries-->
+		<script src='js/jquery.min.js?2.1.3'></script>
+		<script src="js/ipfs-http-client.js"></script>
+		<script src="js/buffer.js?5.2.1"></script>
+		<script src="config.js?v0.1"></script> <!-- read config.js before upload.js -->
+		<script src="js/clickcopy.js"></script>
+		<script src="js/save.js"></script>
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-206458682-1"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-206458682-1');
+		</script>
+	</head>
+
+	<body>
+		<div id="content">
+			<img class="logohead" src="img/logos/logo1.png">
+			<div id="wrapper">
+				<div id="right">
+					<h1>Advanced Settings Below</h1>
+					<p>Below are connection settings for uploading to the <a href="https://blog.decentrafile.com/2021/09/02/how-free-decentralized-cloud-storage-can-exist/"></a>decentralized IPFS storage network</a>.</p>
+					<p>Click, see list of public gatways, <a href="https://ipfs.github.io/public-gateway-checker/">find them here</a>.</p>
+					<div class="form">
+						<script>
+							var formRemote = `<div id="remote">
+								<h1>Configure your IPFS Gateway Node as Remote</h1>
+								<form action="submit" method="post">
+									<div class="top-row">
+										<div class="field-wrap" id="address">
+											<label id="labelAddress">
+												Node Address<span class="req">*</span>
+											</label>
+											<input type="text" name="addressNode" id="remote_address" required autocomplete="off" />
+										</div>
+										<div class="field-wrap" id="apiPort">
+											<label id="labelPort">
+												API Port<span class="req">*</span>
+											</label>
+											<input type="text" name="apiPort" id="remote_apiPort" required autocomplete="off" />
+										</div>
+									</div>
+									<div class="top-row">
+										<div class="field-wrap" id="gatewayPort">
+											<label id="labelGateway">
+												Gateway Port\
+											</label>
+											<input type="text" name="gatewayPort" id="remote_gatewayPort" required autocomplete="off" />
+										</div>
+									</div>
+									<ul class="tab-group" id="remoteProtocol">
+										<li class="tab" id="https" onclick="changeProtocol('remote', 'https')"><a href="#remote">HTTPS</a></li>
+										<li class="tab" id="http" onclick="changeProtocol('remote', 'http')"><a href="#remote">HTTP</a></li>
+									</ul>
+									<button type="button" class="button button-block" id="buttonRemote" onclick="updateNode('remote')">
+									<div class="buttonContent">
+										<div>Connect <img src="img/connect.png" /></div>
+										<div class="min-loading min-loading-hidden">
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+										</div>
+									</div>
+									</button>
+								</form>
+							</div>`;
+
+							var formLocal = `<div id="local">
+								<h1>Configure your IPFS Gateway Node as Local</h1>
+								<form action="submit" method="post">
+									<div class="top-row">
+										<div class="field-wrap" id="address">
+											<label id="labelAddress">
+												Node Address<span class="req">*</span>
+											</label>
+											<input type="text" name="first_name" id="local_address" required autocomplete="off" />
+										</div>
+										<div class="field-wrap" id="apiPort">
+											<label id="labelPort">
+												API Port<span class="req">*</span>
+											</label>
+											<input type="text" name="last_name" id="local_apiPort" required autocomplete="off" />
+										</div>
+									</div>
+									<div class="top-row">
+										<div class="field-wrap" id="gatewayPort">
+											<label id="labelGateway">
+												Gateway Port\
+											</label>
+											<input type="text" name="gatewayPort" id="local_gatewayPort" required autocomplete="off" />
+										</div>
+									</div>
+									<ul class="tab-group" id="localProtocol">
+										<li class="tab" id="https" onclick="changeProtocol('local', 'https')"><a href="#local">HTTPS</a></li>
+										<li class="tab" id="http" onclick="changeProtocol('local', 'http')"><a href="#local">HTTP</a></li>
+									</ul>
+									<button type="button" class="button button-block" id="buttonLocal" onclick="updateNode('local')">
+									<div class="buttonContent">
+										<div>Connect <img src="img/connect.png" /></div>
+										<div class="min-loading min-loading-hidden">
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+										</div>
+									</div>
+									</button>
+								</form>
+							</div>`;
+
+							if (node.default == "remote") {
+								document.querySelector("div.form").innerHTML = `<ul class="tab-group">
+										<li class="tab active">
+											<a href="#remote">Remote Node</a>
+										</li>
+										<li class="tab">
+											<a href="#local">Local Node</a>
+										</li>
+									</ul>
+									<div class="tab-content">
+										${formRemote}\n${formLocal}
+									</div><!-- tab-content -->`
+							}
+
+							if (node.default == "local") {
+								document.querySelector("div.form").innerHTML = `<ul class="tab-group">
+										<li class="tab active">
+											<a href="#local">Local Node</a>
+										</li>
+										<li class="tab">
+											<a href="#remote">Remote Node</a>
+										</li>
+									</ul>
+									<div class="tab-content">
+										${formLocal}\n${formRemote}
+									</div><!-- tab-content -->`
+							}
+
+						</script>
+					</div> <!-- /form -->
+					<div id="divResponse">
+						<pre id="response">
+							<spam id="info">First, upload images or files file <mark>Hashes</mark> will appear here. Then follow the steps below to see or share the file you uploaded into pieces.</spam>
+						</pre>
+					</div>
+				</div>
+				<div id="left">
+					<div id="fileDropBox">
+						<svg class="box_icon" xmlns="http://www.w3.org/2000/svg" width="50" height="43"
+							viewBox="0 0 50 43">
+							<path
+								d="M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z">
+							</path>
+						</svg>
+						Drop files here <br> or
+						<label for='files'>Choose Files &#187;</label>
+						<input type="file" name="files[]" id="files" class="box_file"
+							data-multiple-caption="{count} files selected" multiple="">
+					</div>
+					<!-- Provides the alert() method. -->
+					<!--<p class="desc">Anonymous, No accounts. Uploads Permanent.</p>-->
+					<div style="display: flex;">
+					<div style="justify-content: center;"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6815907113184506" crossorigin="anonymous"></script></script></div>
+					</div>
+					<div id="list">
+						<ul></ul>
+					</div>
+				<div id="upload_conf">
+				<button style="border-color:#2904ff;border:3px;" type="button" onclick="upload()" class="box_button" id="buttonUpload">Upload<img
+						src="img/upload.png" /></button>
+					<div class="min-loading blue loading-hidden">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+				<br>
+				<!--
+				<div id="wrapperfoot">
+					<div style="font-size:21px;"><a href="https://blog.decentrafile.com">Learn how decentralized cloud storage works.</a></div>
+				</div>
+				-->
+				<br>
+				<a href="http://decentrafile.com/retrieve.html"><button style="width:100%;border-color:#2904ff;border:3px;" type="button" class="box_button" type="submit">Get Your Files</button></a>
+				<div id="wrapperfoot">
+				<br>
+						<br>
+						</div>
+						<h1>Direction for Link Sharing</h1>
+					<p>Copy the string of letters and numbers after HASH: and paste it in place of PASTE_HASH in the URL below.</p>
+					<p><div id="link" class="desca"><mark>http://yourlink.decentrafile.com/ipfs/<b><i>PASTE_HASH</i></b></mark></div></p>
+					<p><div class="desca"><i>Example: http://yourlink.decentrafile.com/ipfs/</i><b><mark>QmXngTzi</mark></b></div></p>
+					<p><div class="desca">If you get a 429 error viewing, try again.</div></p>					
+				</div>
+				</div>
+			</div>
+			</div>
+			<!--
+			<div id="wrapperfoot">
+			<div style="font-size:12px;"><a href="http://choiceinternetbrands.com">Made with ❤️ by Choice Internet Brands, Inc.</a></div>
+			</div>
+			-->
+		</div>
+		</div>
+	</body>
+
+</html>
+<script src="js/node-config.js?v0.1"></script>
+<script src="js/connect-and-upload.js?v0.1"></script>
+<script src="js/node-menu.js"></script>
